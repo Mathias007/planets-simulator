@@ -3,7 +3,7 @@ import math
 
 pygame.init()
 
-WIDTH, HEIGHT = 800, 800
+WIDTH, HEIGHT = 1200, 800
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 
 pygame.display.set_caption("Planet Simulation")
@@ -11,16 +11,20 @@ pygame.display.set_caption("Planet Simulation")
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 YELLOW = (255, 255, 0)
-BLUE = (100, 149, 237)      # light blue
+LIGHT_BLUE = (100, 149, 237)
 RED = (188, 39, 50)
 DARK_GREY = (80, 78, 81)
+ORANGE = (255, 165, 0)
+LIGHT_BROWN = (210, 180, 140)
+GREY = (173, 216, 230)
+DARK_BLUE =(0, 0, 139)
 
-FONT = pygame.font.SysFont("comicsans", 16)
+FONT = pygame.font.SysFont("comicsans", 12)
 
 class Planet:
     AU = 149.6e6 * 1000
     G = 6.67428e-11
-    SCALE = 250 / AU        # 1AU = 100px
+    SCALE = 50 / AU        # 1AU = 100px
     TIMESTEP = 3600 * 24    # 1 day
 
     def __init__(self, x, y, radius, color, mass):
@@ -53,7 +57,7 @@ class Planet:
 
         if not self.sun:
             distance_text = FONT.render(f"{round(self.distance_to_sun/1000, 1)}km", 1, WHITE)
-            win.blit(distance_text, (x - distance_text.get_width()/2, y - distance_text.get_height()/2))
+            win.blit(distance_text, (x - distance_text.get_width()/2, y - distance_text.get_height()*2.5))
 
         pygame.draw.circle(win, self.color, (x, y), self.radius)
 
@@ -95,22 +99,37 @@ def main():
     run = True
     clock = pygame.time.Clock()
 
-    sun = Planet(0, 0, 30, YELLOW, 1.98892 * 10**30)
+    sun = Planet(0, 0, 10, YELLOW, 1.98892 * 10**30)
     sun.sun = True
 
-    mercury = Planet(0.387 * Planet.AU, 0, 8, DARK_GREY, 3.30 * 10**24)
+    mercury = Planet(0.387 * Planet.AU, 0, 6, DARK_GREY, 3.30 * 10**24)
     mercury.y_vel = -47.4 * 1000
     
-    venus = Planet(0.723 * Planet.AU, 0, 14, WHITE, 4.8685 * 10**24)
+    venus = Planet(0.723 * Planet.AU, 0, 8, WHITE, 4.8685 * 10**24)
     venus.y_vel = -35.02 * 1000
     
-    earth = Planet(-1 * Planet.AU, 0, 16, BLUE, 5.9742 * 10**24)
+    earth = Planet(-1 * Planet.AU, 0, 10, LIGHT_BLUE, 5.9742 * 10**24)
     earth.y_vel = 29.783 * 1000
 
-    mars = Planet(-1.524 * Planet.AU, 0, 12, RED, 6.39 * 10**23)
+    mars = Planet(-1.524 * Planet.AU, 0, 7, RED, 6.39 * 10**23)
     mars.y_vel = 24.077 * 1000
 
-    planets = [sun, mercury, venus, earth, mars]
+    jupiter = Planet(5.203 * Planet.AU, 0, 24, ORANGE, 1.898 * 10**27)
+    jupiter.y_vel = -13.07 * 1000
+    
+    saturn = Planet(9.582 * Planet.AU, 0, 19, LIGHT_BROWN, 5.683 * 10**26)
+    saturn.y_vel = -9.69 * 1000
+    
+    uranus = Planet(19.22 * Planet.AU, 0, 14, GREY, 8.681 * 10**25)
+    uranus.y_vel = -6.81 * 1000
+    
+    neptune = Planet(30.05 * Planet.AU, 0, 12, DARK_BLUE, 1.024 * 10**26)
+    neptune.y_vel = -5.43 * 1000
+
+    planets = [
+        sun, mercury, venus, earth, mars, 
+        jupiter, saturn, uranus, neptune
+    ]
 
     while run:
         clock.tick(60)
